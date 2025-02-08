@@ -4,6 +4,7 @@ InstagramPostsScraper is a Python library for collect instagram users' data.
 
 The data obtained by web crawlers is not real-time data, but rather data from a specific point in time on the same day.
 
+I’d really appreciate your support! You can star ⭐ or fork this repository to help me keep sharing more interesting web scrapers.
 
 ## Requirements
 ```bash

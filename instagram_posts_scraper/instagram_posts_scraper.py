@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
-from src.request import *
-from src.parse import *
-from src.utils import *
-from src.scraper import *
-from src.utils.utils import *
-from file_operation import *
+from instagram_posts_scraper.request import *
+from instagram_posts_scraper.parse import *
+from instagram_posts_scraper.utils import *
+from instagram_posts_scraper.scraper import *
+from instagram_posts_scraper.utils.utils import *
+from instagram_posts_scraper.file_operation import *
 
 
 class ScrapedDataManager(object):

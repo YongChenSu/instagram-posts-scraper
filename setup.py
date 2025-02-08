@@ -7,7 +7,7 @@ setup(
     version='0.0.1',
     packages=[
         "instagram_posts_scraper",
-        "instagram_posts_scraper.src"
+        "instagram_posts_scraper.utils"
     ],
     license='MIT',
     description='Implement Instagram Posts Scraper for post data retrieval',

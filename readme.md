@@ -25,7 +25,7 @@ pip install instagram-posts-scraper
 ## Usage - Sample
 
 ```python
-from instagram_posts_scraper import InstaPeriodScraper
+from instagram_posts_scraper.instagram_posts_scraper import InstaPeriodScraper
 
 
 target_info = {"username": "kaicenat", "days_limit":60}

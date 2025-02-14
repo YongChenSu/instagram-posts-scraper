@@ -15,7 +15,7 @@ setup(
     long_description_content_type='text/markdown',
     author='FaustRen',
     author_email='faustren1z@gmail.com',
-    url='https://github.com/FaustRen/instagram_posts_scraper',
+    url='https://github.com/FaustRen/instagram-posts-scraper',
     classifiers=[
         "Programming Language :: Python :: 3.11",
         "License :: OSI Approved :: MIT License",

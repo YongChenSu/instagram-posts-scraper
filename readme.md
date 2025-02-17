@@ -6,6 +6,19 @@ The data obtained by web crawlers is not real-time data, but rather data from a 
 
 I’d really appreciate your support! You can star ⭐ or fork this repository to help me keep sharing more interesting web scrapers.
 
+# Support Me
+
+If you enjoy this project and would like to support me, please consider donating 🙌  
+Your support will help me continue developing this project and working on other exciting ideas!
+
+## 💖 Ways to Support:
+
+- **PayPal**: [https://www.paypal.me/faustren1z](https://www.paypal.me/faustren1z)
+- **Buy Me a Coffee**: [https://buymeacoffee.com/faustren1z](https://buymeacoffee.com/faustren1z)
+
+Thank you for your support!! 🎉
+
+
 ## Requirements
 ```bash
 beautifulsoup4==4.13.3

@@ -17,12 +17,3 @@ class JsonOperation:
         with open(current_directory, 'r') as file:
             result = json.load(file)
         return result
-
-    
-
-class CsvOperation:
-    @staticmethod
-    def read_kol_csv():
-        current_directory = os.path.dirname(__file__) + "/resources/new_input_scraper.csv"
-        result = pd.read_csv(current_directory)
-        return result

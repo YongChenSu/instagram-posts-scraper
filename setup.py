@@ -4,7 +4,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='instagram-posts-scraper',
-    version='0.0.1',
+    version='0.0.2',
     packages=[
         "instagram_posts_scraper",
         "instagram_posts_scraper.utils"

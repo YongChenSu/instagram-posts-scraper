@@ -2,6 +2,7 @@
 import json
 import cloudscraper
 from bs4 import BeautifulSoup
+import requests
 
 
 class PixwoxRequest(object):
@@ -14,8 +15,18 @@ class PixwoxRequest(object):
                      "mobile": "False"})
 
     def send_requests(self, url):
-        response = self.__scraper.get(url)
+        # response = self.__scraper.get(url) # temporary stop this good method  :（
+        response = requests.get(
+            url=url, 
+            headers={"User-Agent":self.__user_agent}, 
+            cookies=self.__cookies
+        )
         return response
+    
+    def set_valid_headers_cookies(self, valid_headers_cookies):
+        self.__valid_headers_cookies = valid_headers_cookies
+        self.__user_agent = self.__valid_headers_cookies[0].get("User-Agent")
+        self.__cookies = self.__valid_headers_cookies[1]
 
     def get_init_content(self, username: str) -> str:
         get_url = f"https://www.picnob.com/zh-hant/profile/{username}"

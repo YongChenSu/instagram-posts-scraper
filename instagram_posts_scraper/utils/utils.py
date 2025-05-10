@@ -5,6 +5,12 @@ import pytz
 import pandas as pd
 from functools import wraps
 import time
+import os
+import json
+import requests
+from seleniumbase import Driver
+from pathlib import Path
+from bs4 import BeautifulSoup
 
 
 def timeit(func):
@@ -69,3 +75,71 @@ def is_date_exceed_half_year(scraped_items:pd.DataFrame, days_limit:int):
     if max_days_ago > days_limit:  # 半年內
         return True
     return False
+
+def get_valid_headers_cookies(username: str):
+    # 1. Get the main script directory (not the utils directory)
+    main_dir = Path(__file__).resolve().parent.parent  # one level above utils
+    json_dir = main_dir / "auth_data" # directory to store headers/cookies
+    json_dir.mkdir(exist_ok=True)  # create directory if it doesn't exist
+    json_path = json_dir / f"instagram_posts_scraper_headers.json" # path to the JSON file
+    url = f"https://www.pixnoy.com/profile/{username}"
+
+    # 2. Use Selenium to bypass Cloudflare and save headers/cookies
+    def crawl_and_save():
+        print("⚠️ Launching Selenium to bypass Cloudflare...")
+        driver = Driver(uc=True, headless=True)
+        driver.uc_open_with_reconnect(url)
+        time.sleep(10)
+
+        cookies = {c['name']: c['value'] for c in driver.get_cookies()}
+        user_agent = driver.execute_script("return navigator.userAgent;")
+        headers = {"User-Agent": user_agent}
+
+        # save json
+        with open(json_path, "w") as f:
+            json.dump({"headers": headers, "cookies": cookies}, f, indent=2)
+
+        driver.quit()
+        print("Already update headers and cookies")
+        return headers, cookies
+
+    # 2. check json 是否存在
+    if json_path.exists():
+        with open(json_path, "r") as f:
+            try:
+                data = json.load(f)
+                headers = data["headers"]
+                cookies = data["cookies"]
+
+                print("Attempting to use cached headers and cookies...")
+                resp = requests.get(url, headers=headers, cookies=cookies)
+                if resp.status_code == 200:
+                    print("Cache is valid. Using cached data.")
+                    return headers, cookies
+                else:
+                    print(f"Cache is invalid. Status code: {resp.status_code}. Fetching new data...")
+                    return crawl_and_save()
+
+            except Exception as e:
+                print("Failed to read JSON file. Re-fetching headers and cookies.")
+                return crawl_and_save()
+    else:
+        return crawl_and_save()
+
+def get_scraper_utils(html:str):
+    soup = BeautifulSoup(html, 'html.parser')
+    userid = soup.find('input', {'name': 'userid'})['value']
+    username = soup.find('input', {'name': 'username'})['value']
+    more_btns = soup.select('a.more_btn') # find all a.more_btn
+    for btn in more_btns: # Filter data-next (exists value)
+        data_next = btn.get('data-next')
+        if data_next:
+            clean_data_next = data_next.rstrip('=')
+            data_maxid = btn.get('data-maxid')
+            break
+    return {
+        "userid":userid,
+        "username":username,
+        "clean_data_next":clean_data_next,
+        "data_maxid":data_maxid
+    }

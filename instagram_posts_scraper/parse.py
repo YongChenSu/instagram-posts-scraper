@@ -38,6 +38,47 @@ class Parser(object):
             if each_info.text != ' ':
                 user_info_list.append(str(each_info.text))
         return user_info_list
+    
+    @staticmethod
+    def extract_init_posts(html):
+        """
+        Extracts post details (text, likes, comments, time) from HTML content.
+        
+        Args:
+            html (str): The full HTML content of the page.
+        
+        Returns:
+            list[dict]: A list of dictionaries containing post information.
+        """
+        soup = BeautifulSoup(html, "html.parser")
+
+        # Find all post items under .posts > .items > .item
+        items = soup.select("div.posts div.items div.item")
+
+        init_posts = []
+
+        for item in items:
+            post = {}
+            
+            # 1. Post content text
+            sum_div = item.select_one("div.sum")
+            post["text"] = sum_div.text.strip() if sum_div else None
+
+            # 2. Like count
+            like_span = item.select_one("span.count_item_like span.num")
+            post["likes"] = like_span.text.strip() if like_span else None
+
+            # 3. Comment count
+            comment_span = item.select_one("span.count_item_comment span.num")
+            post["comments"] = comment_span.text.strip() if comment_span else None
+
+            # 4. Post date/time
+            time_span = item.select_one("div.time span.txt")
+            post["time"] = time_span.text.strip() if time_span else None
+
+            init_posts.append(post)
+        
+        return init_posts
 
     def get_soup(self, response):
         soup = BeautifulSoup(response.text, self.__DEFAULT_SOUP_PARSER)

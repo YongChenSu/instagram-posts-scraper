@@ -6,6 +6,7 @@ import pandas as pd
 from functools import wraps
 import time
 import os
+from selenium.webdriver.common.by import By
 import json
 import requests
 from seleniumbase import Driver
@@ -89,6 +90,8 @@ def get_valid_headers_cookies(username: str):
         print("⚠️ Launching Selenium to bypass Cloudflare...")
         driver = Driver(uc=True, headless=True)
         driver.uc_open_with_reconnect(url)
+        time.sleep(10)
+        driver.find_element(By.XPATH, '//*[@id="button"]/span').click()
         time.sleep(10)
 
         cookies = {c['name']: c['value'] for c in driver.get_cookies()}

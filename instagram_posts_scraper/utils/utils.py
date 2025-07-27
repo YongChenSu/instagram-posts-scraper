@@ -91,7 +91,50 @@ def get_valid_headers_cookies(username: str):
         driver = Driver(uc=True, headless=True)
         driver.uc_open_with_reconnect(url)
         time.sleep(10)
-        driver.find_element(By.XPATH, '//*[@id="button"]/span').click()
+        
+        # Handle potential overlay dialogs (cookie consent, etc.)
+        try:
+            # Try to dismiss any overlay dialogs first
+            overlay_selectors = [
+                '.fc-dialog-overlay',
+                '.fc-consent-root',
+                '[class*="cookie"]',
+                '[class*="consent"]',
+                '[class*="privacy"]'
+            ]
+            for selector in overlay_selectors:
+                try:
+                    overlay = driver.find_element(By.CSS_SELECTOR, selector)
+                    if overlay.is_displayed():
+                        # Try to find close button or accept button
+                        close_buttons = [
+                            '.fc-close',
+                            '.fc-cta-consent',
+                            '[class*="accept"]',
+                            '[class*="close"]',
+                            'button[type="button"]'
+                        ]
+                        for btn_selector in close_buttons:
+                            try:
+                                close_btn = driver.find_element(By.CSS_SELECTOR, btn_selector)
+                                if close_btn.is_displayed() and close_btn.is_enabled():
+                                    close_btn.click()
+                                    time.sleep(2)
+                                    break
+                            except:
+                                continue
+                        break
+                except:
+                    continue
+        except:
+            pass
+        
+        # Now try to click the main button
+        try:
+            driver.find_element(By.XPATH, '//*[@id="button"]/span').click()
+        except Exception as e:
+            print(f"Warning: Could not click button, but continuing: {e}")
+        
         time.sleep(10)
 
         cookies = {c['name']: c['value'] for c in driver.get_cookies()}

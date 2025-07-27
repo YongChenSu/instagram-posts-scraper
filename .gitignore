@@ -1,3 +1,5 @@
 **/__pycache__/
 .DS_Store
 .pypirc
+
+instagram_posts_scraper/auth_data/instagram_posts_scraper_headers.json

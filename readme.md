@@ -57,3 +57,6 @@ res = ig_posts_scraper.get_posts(target_info=target_info)
 ![image](https://github.com/FaustRen/instagram-posts-scraper/blob/main/usage.png)
 
 ![image](https://github.com/FaustRen/instagram-posts-scraper/blob/main/scraped_posts.png)
+
+## DeepWiki
+https://deepwiki.com/FaustRen/instagram-posts-scraper
